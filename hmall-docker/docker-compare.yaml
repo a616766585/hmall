@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0.20
+    container_name: hmall-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hmall
+    ports:
+      - "13400:3306"
+      - "13401:33060"
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./mysql:/docker-entrypoint-initdb.d
+  nginx:
+    image: nginx
+    container_name: hmall-nginx
+    ports:
+      - "13402:80"
+      - "18080:18080"
+      - "18081:18081"
+      - "18082:18082"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/html:/usr/share/nginx/html
